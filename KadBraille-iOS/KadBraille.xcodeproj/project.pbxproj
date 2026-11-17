@@ -356,7 +356,7 @@
 
 /* Begin XCConfigurationList section */
 		C00000010000000000000001 /* Build configuration list for PBXProject "KadBraille" */ = {
-			isa = XCBuildConfigurationList;
+			isa = XCConfigurationList;
 			buildConfigurations = (
 				D00000010000000000000001 /* Debug */,
 				D00000010000000000000002 /* Release */,
@@ -365,7 +365,7 @@
 			defaultConfigurationName = Release;
 		};
 		C00000020000000000000001 /* Build configuration list for PBXNativeTarget "KadBraille" */ = {
-			isa = XCBuildConfigurationList;
+			isa = XCConfigurationList;
 			buildConfigurations = (
 				D00000020000000000000001 /* Debug */,
 				D00000020000000000000002 /* Release */,
