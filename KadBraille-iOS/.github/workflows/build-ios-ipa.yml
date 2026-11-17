@@ -1,0 +1,46 @@
+name: Build KadBraille Unsigned IPA (Free Sideloading)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build-ipa:
+    runs-on: macos-14
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer || true
+
+      - name: Build Unsigned iOS App (Free-Signing Entitlements)
+        run: |
+          if [ -d "KadBraille-iOS" ]; then cd KadBraille-iOS; fi
+          xcodebuild \
+            -project KadBraille.xcodeproj \
+            -target KadBraille \
+            -configuration Release \
+            -sdk iphoneos \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_ENTITLEMENTS="KadBraille/KadBraille-FreeSigning.entitlements" \
+            CONFIGURATION_BUILD_DIR="$PWD/build/Release-iphoneos" \
+            build
+
+      - name: Ad-Hoc Sign & Package KadBraille-Unsigned.ipa
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/dist"
+          if [ -d "KadBraille-iOS" ]; then APP_DIR="KadBraille-iOS/build"; else APP_DIR="build"; fi
+          codesign --force --deep --sign - "$APP_DIR/Release-iphoneos/KadBraille.app"
+          mkdir -p "$APP_DIR/Payload"
+          cp -R "$APP_DIR/Release-iphoneos/KadBraille.app" "$APP_DIR/Payload/"
+          (cd "$APP_DIR" && zip -r -y "$GITHUB_WORKSPACE/dist/KadBraille-Unsigned.ipa" Payload)
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: KadBraille-Unsigned-IPA
+          path: dist/KadBraille-Unsigned.ipa

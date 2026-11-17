@@ -1,0 +1,379 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B00000010000000000000001 /* KadBrailleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000001 /* KadBrailleApp.swift */; };
+		B00000010000000000000002 /* AudioTrackItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000002 /* AudioTrackItem.swift */; };
+		B00000010000000000000003 /* NFCTagModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000003 /* NFCTagModels.swift */; };
+		B00000010000000000000004 /* NDEFCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000004 /* NDEFCodec.swift */; };
+		B00000010000000000000005 /* LocalAudioDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000005 /* LocalAudioDatabase.swift */; };
+		B00000010000000000000006 /* GoogleDriveSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000006 /* GoogleDriveSyncService.swift */; };
+		B00000010000000000000007 /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000007 /* AudioPlayerManager.swift */; };
+		B00000010000000000000008 /* NFCTagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000008 /* NFCTagManager.swift */; };
+		B00000010000000000000009 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000010000000000000009 /* MainTabView.swift */; };
+		B0000001000000000000000A /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000001000000000000000A /* ScannerView.swift */; };
+		B0000001000000000000000B /* DatabaseSyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000001000000000000000B /* DatabaseSyncView.swift */; };
+		B0000001000000000000000C /* NFCToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000001000000000000000C /* NFCToolsView.swift */; };
+		B00000020000000000000001 /* 12x.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F00000020000000000000001 /* 12x.m4a */; };
+		B00000020000000000000002 /* 3x + x.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F00000020000000000000002 /* 3x + x.m4a */; };
+		B00000020000000000000003 /* 4x + 5x.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F00000020000000000000003 /* 4x + 5x.m4a */; };
+		B00000020000000000000004 /* 4x.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F00000020000000000000004 /* 4x.m4a */; };
+		B00000020000000000000005 /* 6x.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F00000020000000000000005 /* 6x.m4a */; };
+		B00000020000000000000006 /* 8x + 4x.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F00000020000000000000006 /* 8x + 4x.m4a */; };
+		B00000020000000000000007 /* 9x.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F00000020000000000000007 /* 9x.m4a */; };
+		B00000020000000000000008 /* x+5x.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F00000020000000000000008 /* x+5x.m4a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F00000000000000000000001 /* KadBraille.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KadBraille.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F00000010000000000000001 /* KadBrailleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KadBrailleApp.swift; sourceTree = "<group>"; };
+		F00000010000000000000002 /* AudioTrackItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTrackItem.swift; sourceTree = "<group>"; };
+		F00000010000000000000003 /* NFCTagModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCTagModels.swift; sourceTree = "<group>"; };
+		F00000010000000000000004 /* NDEFCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NDEFCodec.swift; sourceTree = "<group>"; };
+		F00000010000000000000005 /* LocalAudioDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAudioDatabase.swift; sourceTree = "<group>"; };
+		F00000010000000000000006 /* GoogleDriveSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDriveSyncService.swift; sourceTree = "<group>"; };
+		F00000010000000000000007 /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
+		F00000010000000000000008 /* NFCTagManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCTagManager.swift; sourceTree = "<group>"; };
+		F00000010000000000000009 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		F0000001000000000000000A /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
+		F0000001000000000000000B /* DatabaseSyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSyncView.swift; sourceTree = "<group>"; };
+		F0000001000000000000000C /* NFCToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCToolsView.swift; sourceTree = "<group>"; };
+		F0000001000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0000001000000000000000E /* KadBraille.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KadBraille.entitlements; sourceTree = "<group>"; };
+		F00000020000000000000001 /* 12x.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 12x.m4a; sourceTree = "<group>"; };
+		F00000020000000000000002 /* 3x + x.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "3x + x.m4a"; sourceTree = "<group>"; };
+		F00000020000000000000003 /* 4x + 5x.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "4x + 5x.m4a"; sourceTree = "<group>"; };
+		F00000020000000000000004 /* 4x.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4x.m4a; sourceTree = "<group>"; };
+		F00000020000000000000005 /* 6x.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 6x.m4a; sourceTree = "<group>"; };
+		F00000020000000000000006 /* 8x + 4x.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "8x + 4x.m4a"; sourceTree = "<group>"; };
+		F00000020000000000000007 /* 9x.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 9x.m4a; sourceTree = "<group>"; };
+		F00000020000000000000008 /* x+5x.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "x+5x.m4a"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A00000030000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A00000010000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A00000020000000000000001 /* KadBraille */,
+				A00000020000000000000008 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A00000020000000000000001 /* KadBraille */ = {
+			isa = PBXGroup;
+			children = (
+				A00000020000000000000002 /* App */,
+				A00000020000000000000003 /* Models */,
+				A00000020000000000000004 /* Services */,
+				A00000020000000000000005 /* Views */,
+				A00000020000000000000006 /* Resources */,
+				F0000001000000000000000D /* Info.plist */,
+				F0000001000000000000000E /* KadBraille.entitlements */,
+			);
+			path = KadBraille;
+			sourceTree = "<group>";
+		};
+		A00000020000000000000002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F00000010000000000000001 /* KadBrailleApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A00000020000000000000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F00000010000000000000002 /* AudioTrackItem.swift */,
+				F00000010000000000000003 /* NFCTagModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A00000020000000000000004 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F00000010000000000000004 /* NDEFCodec.swift */,
+				F00000010000000000000005 /* LocalAudioDatabase.swift */,
+				F00000010000000000000006 /* GoogleDriveSyncService.swift */,
+				F00000010000000000000007 /* AudioPlayerManager.swift */,
+				F00000010000000000000008 /* NFCTagManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A00000020000000000000005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F00000010000000000000009 /* MainTabView.swift */,
+				F0000001000000000000000A /* ScannerView.swift */,
+				F0000001000000000000000B /* DatabaseSyncView.swift */,
+				F0000001000000000000000C /* NFCToolsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A00000020000000000000006 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A00000020000000000000007 /* BundledAudio */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A00000020000000000000007 /* BundledAudio */ = {
+			isa = PBXGroup;
+			children = (
+				F00000020000000000000001 /* 12x.m4a */,
+				F00000020000000000000002 /* 3x + x.m4a */,
+				F00000020000000000000003 /* 4x + 5x.m4a */,
+				F00000020000000000000004 /* 4x.m4a */,
+				F00000020000000000000005 /* 6x.m4a */,
+				F00000020000000000000006 /* 8x + 4x.m4a */,
+				F00000020000000000000007 /* 9x.m4a */,
+				F00000020000000000000008 /* x+5x.m4a */,
+			);
+			path = BundledAudio;
+			sourceTree = "<group>";
+		};
+		A00000020000000000000008 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000001 /* KadBraille.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		T00000010000000000000001 /* KadBraille */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C00000020000000000000001 /* Build configuration list for PBXNativeTarget "KadBraille" */;
+			buildPhases = (
+				A00000030000000000000001 /* Sources */,
+				A00000030000000000000002 /* Frameworks */,
+				A00000030000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KadBraille;
+			productName = KadBraille;
+			productReference = F00000000000000000000001 /* KadBraille.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		P00000010000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					T00000010000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+						SystemCapabilities = {
+							com.apple.NFC = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = C00000010000000000000001 /* Build configuration list for PBXProject "KadBraille" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A00000010000000000000001;
+			productRefGroup = A00000020000000000000008 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				T00000010000000000000001 /* KadBraille */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A00000030000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B00000020000000000000001 /* 12x.m4a in Resources */,
+				B00000020000000000000002 /* 3x + x.m4a in Resources */,
+				B00000020000000000000003 /* 4x + 5x.m4a in Resources */,
+				B00000020000000000000004 /* 4x.m4a in Resources */,
+				B00000020000000000000005 /* 6x.m4a in Resources */,
+				B00000020000000000000006 /* 8x + 4x.m4a in Resources */,
+				B00000020000000000000007 /* 9x.m4a in Resources */,
+				B00000020000000000000008 /* x+5x.m4a in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A00000030000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B00000010000000000000001 /* KadBrailleApp.swift in Sources */,
+				B00000010000000000000002 /* AudioTrackItem.swift in Sources */,
+				B00000010000000000000003 /* NFCTagModels.swift in Sources */,
+				B00000010000000000000004 /* NDEFCodec.swift in Sources */,
+				B00000010000000000000005 /* LocalAudioDatabase.swift in Sources */,
+				B00000010000000000000006 /* GoogleDriveSyncService.swift in Sources */,
+				B00000010000000000000007 /* AudioPlayerManager.swift in Sources */,
+				B00000010000000000000008 /* NFCTagManager.swift in Sources */,
+				B00000010000000000000009 /* MainTabView.swift in Sources */,
+				B0000001000000000000000A /* ScannerView.swift in Sources */,
+				B0000001000000000000000B /* DatabaseSyncView.swift in Sources */,
+				B0000001000000000000000C /* NFCToolsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D00000010000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D00000010000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D00000020000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = KadBraille/KadBraille.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = KadBraille/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kadbraille.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D00000020000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = KadBraille/KadBraille.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = KadBraille/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kadbraille.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C00000010000000000000001 /* Build configuration list for PBXProject "KadBraille" */ = {
+			isa = XCBuildConfigurationList;
+			buildConfigurations = (
+				D00000010000000000000001 /* Debug */,
+				D00000010000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C00000020000000000000001 /* Build configuration list for PBXNativeTarget "KadBraille" */ = {
+			isa = XCBuildConfigurationList;
+			buildConfigurations = (
+				D00000020000000000000001 /* Debug */,
+				D00000020000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = P00000010000000000000001 /* Project object */;
+}
