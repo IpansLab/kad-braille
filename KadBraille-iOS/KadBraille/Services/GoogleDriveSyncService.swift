@@ -41,6 +41,7 @@ final class GoogleDriveSyncService: ObservableObject {
     @Published var syncLog: [String] = []
     @Published var lastErrorMessage: String?
 
+    private static let defaultFolderURL = "https://drive.google.com/drive/folders/1-ypAMQvEZWxxlKAblVu71tyWxWlF0hXk"
     private static let folderDefaultsKey = "kadbraille_gdrive_folder_input"
     private static let apiKeyDefaultsKey = "kadbraille_gdrive_api_key"
     private static let lastSyncDefaultsKey = "kadbraille_gdrive_last_sync"
@@ -49,7 +50,10 @@ final class GoogleDriveSyncService: ObservableObject {
     private let session: URLSession
 
     init() {
-        self.folderInput = UserDefaults.standard.string(forKey: Self.folderDefaultsKey) ?? ""
+        let savedFolder = UserDefaults.standard.string(forKey: Self.folderDefaultsKey) ?? ""
+        self.folderInput = savedFolder.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            ? Self.defaultFolderURL
+            : savedFolder
         self.apiKey = UserDefaults.standard.string(forKey: Self.apiKeyDefaultsKey) ?? ""
         if let ts = UserDefaults.standard.object(forKey: Self.lastSyncDefaultsKey) as? Date {
             self.lastSyncDate = ts
@@ -285,7 +289,7 @@ final class GoogleDriveSyncService: ObservableObject {
         if !apiKey.isEmpty {
             return URL(string: "https://www.googleapis.com/drive/v3/files/\(fileId)?alt=media&key=\(apiKey)")!
         }
-        return URL(string: "https://drive.google.com/uc?export=download&id=\(fileId)")!
+        return URL(string: "https://drive.usercontent.google.com/download?id=\(fileId)&export=download&confirm=t")!
     }
 
     private func downloadBinaryData(from url: URL) async throws -> Data {

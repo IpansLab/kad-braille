@@ -264,8 +264,10 @@
     }
   }
 
+  const DEFAULT_GDRIVE_URL = "https://drive.google.com/drive/folders/1-ypAMQvEZWxxlKAblVu71tyWxWlF0hXk";
+
   function loadSavedSettings() {
-    el.driveFolderInput.value = localStorage.getItem("kadbraille_gdrive_folder") || "";
+    el.driveFolderInput.value = localStorage.getItem("kadbraille_gdrive_folder") || DEFAULT_GDRIVE_URL;
     el.driveApiKeyInput.value = localStorage.getItem("kadbraille_gdrive_apikey") || "";
     const lastSync = localStorage.getItem("kadbraille_gdrive_last_sync");
     if (lastSync) {
@@ -616,6 +618,7 @@
 
     try {
       let files = [];
+      let usedMirror = false;
       const isLocalServer =
         window.location.hostname === "localhost" ||
         window.location.hostname === "127.0.0.1" ||
@@ -635,12 +638,29 @@
         const json = await resp.json();
         files = json.files || [];
       } else {
-        appendSyncLog("Reading public embeddedfolderview via CORS fallback...");
+        appendSyncLog("Reading public Google Drive folder via multi-proxy cascade...");
         const target = `https://drive.google.com/embeddedfolderview?id=${encodeURIComponent(folderId)}#list`;
-        const resp = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(target)}`);
-        if (!resp.ok) throw new Error(`Proxy HTTP ${resp.status}`);
-        const html = await resp.text();
-        files = parseEmbeddedDriveHtml(html);
+        try {
+          const html = await fetchWithCorsFallback(target, true);
+          files = parseEmbeddedDriveHtml(html);
+        } catch (proxyErr) {
+          appendSyncLog(`Public CORS proxies unavailable (${proxyErr.message}). Checking same-origin Drive mirror...`);
+          const mirrorResp = await fetch(`./gdrive-cache/manifest.json?ts=${Date.now()}`, { cache: "no-store" });
+          if (mirrorResp.ok) {
+            const mirrorJson = await mirrorResp.json();
+            if (!mirrorJson.folderId || mirrorJson.folderId === folderId) {
+              files = mirrorJson.files || [];
+              usedMirror = true;
+              appendSyncLog(`Loaded ${files.length} file(s) from GitHub Pages Drive mirror (synced ${mirrorJson.syncedAt || "recently"}).`);
+            } else {
+              throw new Error(
+                "Browser CORS proxies timed out for this custom folder. Add an optional Google Drive API Key above, or sync via the Windows launcher."
+              );
+            }
+          } else {
+            throw proxyErr;
+          }
+        }
       }
 
       // Check optional manifest.json
@@ -648,7 +668,7 @@
       const manifestEntry = files.find((f) => f.name.toLowerCase() === "manifest.json");
       if (manifestEntry) {
         appendSyncLog("Found manifest.json — reading custom UID/title metadata...");
-        const mBlob = await downloadDriveFileBlob(manifestEntry.id, apiKey, isLocalServer);
+        const mBlob = await downloadDriveFileBlob(manifestEntry, apiKey, isLocalServer, usedMirror);
         const mJson = JSON.parse(await mBlob.text());
         const list = Array.isArray(mJson) ? mJson : (mJson.tracks || []);
         for (const item of list) {
@@ -658,9 +678,17 @@
         }
       }
 
-      const audioFiles = files.filter((f) =>
-        AUDIO_EXTS.some((ext) => f.name.toLowerCase().endsWith(ext))
-      );
+      // Filter and deduplicate audio files by lowercase filename
+      const seenAudioNames = new Set();
+      const audioFiles = [];
+      for (const f of files) {
+        const lower = f.name.toLowerCase();
+        if (!AUDIO_EXTS.some((ext) => lower.endsWith(ext))) continue;
+        if (seenAudioNames.has(lower)) continue;
+        seenAudioNames.add(lower);
+        audioFiles.push(f);
+      }
+
       if (audioFiles.length === 0) {
         throw new Error("No .m4a/.mp3/.wav/.aac audio files found in that Google Drive folder.");
       }
@@ -670,7 +698,7 @@
 
       for (const file of audioFiles) {
         el.syncStatusText.textContent = `Downloading ${file.name} (${count + 1}/${audioFiles.length})...`;
-        const blob = await downloadDriveFileBlob(file.id, apiKey, isLocalServer);
+        const blob = await downloadDriveFileBlob(file, apiKey, isLocalServer, usedMirror);
         const meta = manifestMap[normalizeKey(file.name)];
         const title = (meta && meta.title) ? meta.title : cleanTitleFromFileName(file.name);
         const key = normalizeKey(title);
@@ -728,6 +756,52 @@
     }
   }
 
+  async function fetchWithCorsFallback(targetUrl, asText = false, timeoutMs = 5500) {
+    const encoded = encodeURIComponent(targetUrl);
+    const candidates = [
+      {
+        name: "codetabs",
+        url: `https://api.codetabs.com/v1/proxy?quest=${encoded}`,
+        unwrapJson: false
+      },
+      {
+        name: "corsproxy",
+        url: `https://corsproxy.io/?url=${encoded}`,
+        unwrapJson: false
+      },
+      {
+        name: "allorigins-get",
+        url: `https://api.allorigins.win/get?url=${encoded}`,
+        unwrapJson: true
+      }
+    ];
+
+    const attempts = candidates.map(async (c) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const resp = await fetch(c.url, { signal: controller.signal });
+        if (!resp.ok) throw new Error(`${c.name} HTTP ${resp.status}`);
+        if (c.unwrapJson && asText) {
+          const wrapped = await resp.json();
+          if (!wrapped || typeof wrapped.contents !== "string") {
+            throw new Error(`${c.name} empty contents`);
+          }
+          return wrapped.contents;
+        }
+        return asText ? await resp.text() : await resp.blob();
+      } finally {
+        clearTimeout(timer);
+      }
+    });
+
+    try {
+      return await Promise.any(attempts);
+    } catch (_) {
+      throw new Error("All public CORS proxies failed or timed out");
+    }
+  }
+
   function parseEmbeddedDriveHtml(html) {
     if (html.includes("ServiceLogin") || html.includes("accounts.google.com/v3/signin")) {
       throw new Error("Folder appears private. Set Drive sharing to 'Anyone with the link'.");
@@ -747,19 +821,28 @@
     return entries;
   }
 
-  async function downloadDriveFileBlob(fileId, apiKey, isLocalServer) {
-    let url;
+  async function downloadDriveFileBlob(fileEntry, apiKey, isLocalServer, usedMirror) {
+    const fileId = fileEntry.id;
+    let blob;
+
     if (apiKey) {
-      url = `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?alt=media&key=${encodeURIComponent(apiKey)}`;
+      const url = `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?alt=media&key=${encodeURIComponent(apiKey)}`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`Download HTTP ${resp.status}`);
+      blob = await resp.blob();
     } else if (isLocalServer) {
-      url = `/api/gdrive-download?fileId=${encodeURIComponent(fileId)}`;
+      const resp = await fetch(`/api/gdrive-download?fileId=${encodeURIComponent(fileId)}`);
+      if (!resp.ok) throw new Error(`Download HTTP ${resp.status}`);
+      blob = await resp.blob();
+    } else if (usedMirror) {
+      const resp = await fetch(`./gdrive-cache/${encodeURIComponent(fileEntry.name)}?ts=${Date.now()}`);
+      if (!resp.ok) throw new Error(`Mirror HTTP ${resp.status}`);
+      blob = await resp.blob();
     } else {
-      const direct = `https://drive.google.com/uc?export=download&id=${encodeURIComponent(fileId)}`;
-      url = `https://api.allorigins.win/raw?url=${encodeURIComponent(direct)}`;
+      const direct = `https://drive.usercontent.google.com/download?id=${encodeURIComponent(fileId)}&export=download&confirm=t`;
+      blob = await fetchWithCorsFallback(direct, false, 7000);
     }
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(`Download HTTP ${resp.status}`);
-    const blob = await resp.blob();
+
     const head = await blob.slice(0, 40).text();
     if (head.toLowerCase().includes("<html") || head.toLowerCase().includes("<!doctype")) {
       throw new Error("Google Drive returned HTML instead of audio. Check folder public sharing.");

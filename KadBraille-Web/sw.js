@@ -1,4 +1,4 @@
-const CACHE_NAME = "kad-braille-v1";
+const CACHE_NAME = "kad-braille-v2";
 
 const PRECACHE_ASSETS = [
   "./",
@@ -38,6 +38,20 @@ self.addEventListener("fetch", (event) => {
 
   // Never intercept external Google Drive / API network requests
   if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // Always prefer network for same-origin Google Drive mirror so Sync Now gets fresh updates
+  if (url.pathname.includes("/gdrive-cache/")) {
+    event.respondWith(
+      fetch(event.request).then((response) => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return response;
+      }).catch(() => caches.match(event.request, { ignoreSearch: true }))
+    );
     return;
   }
 

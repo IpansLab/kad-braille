@@ -27,6 +27,64 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Refresh same-origin Google Drive cache
+        run: |
+          python3 - <<'PY'
+          import html, json, os, re, urllib.request
+          from datetime import datetime, timezone
+
+          folder_id = "1-ypAMQvEZWxxlKAblVu71tyWxWlF0hXk"
+          cache_dir = os.path.join("KadBraille-Web", "gdrive-cache")
+          os.makedirs(cache_dir, exist_ok=True)
+          headers = {"User-Agent": "Mozilla/5.0"}
+
+          try:
+              req = urllib.request.Request(
+                  f"https://drive.google.com/embeddedfolderview?id={folder_id}#list",
+                  headers=headers,
+              )
+              with urllib.request.urlopen(req, timeout=20) as resp:
+                  page = resp.read().decode("utf-8", errors="replace")
+
+              pattern = re.compile(
+                  r'id="entry-([a-zA-Z0-9_-]+)"[\s\S]*?class="flip-entry-title"[^>]*>([^<]+)<'
+              )
+              seen = set()
+              files = []
+              for fid, raw_name in pattern.findall(page):
+                  name = html.unescape(raw_name).strip()
+                  if not fid or not name:
+                      continue
+                  if not re.search(r"\.(m4a|mp3|wav|aac|caf|json)$", name, re.I):
+                      continue
+                  if name.lower() in seen:
+                      continue
+                  seen.add(name.lower())
+
+                  dl_url = f"https://drive.usercontent.google.com/download?id={fid}&export=download&confirm=t"
+                  dl_req = urllib.request.Request(dl_url, headers=headers)
+                  with urllib.request.urlopen(dl_req, timeout=30) as f_resp:
+                      data = f_resp.read()
+                  if data[:20].lower().startswith((b"<html", b"<!doctype")):
+                      continue
+                  with open(os.path.join(cache_dir, name), "wb") as out:
+                      out.write(data)
+                  files.append({"id": fid, "name": name, "size": len(data)})
+                  print(f"Cached {name} ({len(data)} bytes)")
+
+              if files:
+                  manifest = {
+                      "folderId": folder_id,
+                      "syncedAt": datetime.now(timezone.utc).isoformat(),
+                      "files": files,
+                  }
+                  with open(os.path.join(cache_dir, "manifest.json"), "w", encoding="utf-8") as mf:
+                      json.dump(manifest, mf, indent=2)
+                  print(f"Updated gdrive-cache/manifest.json with {len(files)} file(s)")
+          except Exception as exc:
+              print(f"Drive refresh skipped (using committed cache): {exc}")
+          PY
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
